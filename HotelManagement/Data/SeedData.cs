@@ -1,7 +1,7 @@
-﻿using HotelManagement.Data;
+﻿using HotelManagement.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace HotelManagement.Models
+namespace HotelManagement.Data
 {
     public static class SeedData
     {
@@ -9,9 +9,9 @@ namespace HotelManagement.Models
         {
             using (var context = new AppDbContext(serviceProvider.GetRequiredService<DbContextOptions<AppDbContext>>()))
             {
-                if(context.Accounts.Any())
+                if (context.Accounts.Any())
                 {
-                    return; 
+                    return;
                 }
 
                 //Create Manager account
@@ -29,9 +29,9 @@ namespace HotelManagement.Models
                 context.Customers.AddRange(
                     new Customer
                     {
-                        Name="Nguyen Van A",
-                        Phone="0912345678",
-                        Email="nguyenvana@email.com",
+                        Name = "Nguyen Van A",
+                        Phone = "0912345678",
+                        Email = "nguyenvana@email.com",
                         Account = new Account
                         {
                             Username = "nguyenvana",

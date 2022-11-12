@@ -1,5 +1,4 @@
 using HotelManagement.Data;
-using HotelManagement.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;

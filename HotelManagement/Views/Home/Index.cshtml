@@ -3,6 +3,15 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-6">Welcome</h1>
+    <p>Day se la trang chu cua website</a>.</p>
 </div>
+<table class="table table-light table-bordered table-hover">
+	@foreach (var claim in User.Claims)
+	{
+		<tr>
+			<td>@claim.Type</td>
+			<td>@claim.Value</td>
+		</tr>
+	}
+</table>

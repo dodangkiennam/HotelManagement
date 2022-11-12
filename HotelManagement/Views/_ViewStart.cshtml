@@ -1,3 +1,10 @@
 ﻿@{
-    Layout = "_Layout";
+
+    @if (User.HasClaim(ClaimTypes.Role, "manager"))
+    {
+        Layout = "_Layout_Manager";
+    }
+    else{
+        Layout = "_Layout";
+    }
 }

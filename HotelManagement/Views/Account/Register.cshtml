@@ -1,0 +1,49 @@
+﻿@model HotelManagement.Models.Customer
+@{
+	ViewData["Title"] = "Register";
+}
+
+<h1 class="display-6">Register</h1>
+<hr class="display-6"/>
+<div class="row">
+	<div class="col-md-4">
+		<form method="post">
+			<div asp-validation-summary="ModelOnly"></div>
+			@if (!string.IsNullOrEmpty(ViewBag.Message))    
+            {    
+                <span class="text-danger">    
+                    @ViewBag.Message    
+                </span>    
+            }  
+			<div class="mb-3">
+				<label asp-for=Name class="form-label">Full Name</label>
+				<input asp-for=Name class="form-control" />
+				<span asp-validation-for=Name class="text-danger"></span>
+			</div>
+			<div class="mb-3">
+				<label asp-for=Phone class="form-label">Phone Number</label>
+				<input asp-for=Phone class="form-control" />
+				<span asp-validation-for=Phone class="text-danger"></span>
+			</div>
+			<div class="mb-3">
+				<label asp-for=Email class="form-label">Email</label>
+				<input asp-for=Email class="form-control" />
+				<span asp-validation-for=Email class="text-danger"></span>
+			</div>
+			<div class="mb-3">
+				<label asp-for=Account.Username class="form-label">Username</label>
+				<input asp-for=Account.Username class="form-control" />
+				<span asp-validation-for=Account.Username class="text-danger"></span>
+			</div>
+			<div class="mb-3">
+				<label asp-for=Account.Password class="form-label">Password</label>
+				<input asp-for=Account.Password class="form-control" />
+				<span asp-validation-for=Account.Password class="text-danger"></span>
+			</div>
+			@Html.HiddenFor(x => x.Account.RoleName)
+			<div class="mb-3">
+				<input type="submit" value="Confirm" class="btn btn-primary" />
+			</div>
+		</form>
+	</div>
+</div>

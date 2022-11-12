@@ -1,6 +1,7 @@
-﻿using HotelManagement.Models;
+﻿using HotelManagement.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace HotelManagement.Controllers
 {
@@ -15,10 +16,15 @@ namespace HotelManagement.Controllers
 
         public IActionResult Index()
         {
+            if (User.HasClaim(ClaimTypes.Role, "manager"))
+            {
+                return LocalRedirect("/Manager/HotelStatistic");
+            }
+
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult About()
         {
             return View();
         }

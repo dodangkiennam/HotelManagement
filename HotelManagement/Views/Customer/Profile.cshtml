@@ -1,0 +1,40 @@
+﻿@model Customer
+
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<div class="text-center">
+    <h1 class="display-6">My Profile</h1>
+</div>
+
+<table class="table table-bordered">
+	<tr>
+        <td>@Html.DisplayNameFor(c => c.Name)</td>
+        <td>@Model.Name</td>
+    </tr>
+    <tr>
+        <td>@Html.DisplayNameFor(c => c.CitizencardId)</td>
+        <td>@Model.CitizencardId</td>
+    </tr>
+    <tr>
+        <td>@Html.DisplayNameFor(c => c.Phone)</td>
+        <td>@Model.Phone</td>
+    </tr>
+    <tr>
+        <td>@Html.DisplayNameFor(c => c.Email)</td>
+        <td>@Model.Email</td>
+    </tr>
+    <tr>
+        <td>@Html.DisplayNameFor(c => c.CountryCode)</td>
+        <td>@Model.CountryCode</td>
+    </tr>
+    <tr>
+        <td>@Html.DisplayNameFor(c => c.Account.Username)</td>
+        <td>@Model.Account.Username</td>
+    </tr>
+    <tr>
+        <td>@Html.DisplayNameFor(c => c.Account.Password)</td>
+        <td>@Model.Account.Password</td>
+    </tr>
+</table>

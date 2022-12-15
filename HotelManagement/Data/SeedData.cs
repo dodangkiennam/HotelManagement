@@ -32,6 +32,9 @@ namespace HotelManagement.Data
                         Name = "Nguyen Van A",
                         Phone = "0912345678",
                         Email = "nguyenvana@email.com",
+                        CitizencardId = "12345678",
+                        CountryCode = "VN",
+                        Gender = "male",
                         Account = new Account
                         {
                             Username = "nguyenvana",
@@ -44,12 +47,18 @@ namespace HotelManagement.Data
                         Name = "Le Thi B",
                         Phone = "0988888888",
                         Email = "lethib@email.com",
+                        Gender = "female",
+                        CitizencardId = "12345678",
+                        CountryCode = "VN",
                     },
                     new Customer
                     {
                         Name = "Nong Lam C",
                         Phone = "0123456789",
                         Email = "nonglamc@email.com",
+                        Gender = "male",
+                        CitizencardId = "12345678",
+                        CountryCode = "VN",
                         Account = new Account
                         {
                             Username = "nonglamc",

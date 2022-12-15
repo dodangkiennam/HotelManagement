@@ -21,6 +21,8 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
+    <Folder Include="Views\Manage\BookingManage\" />
+    <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
 </Project>

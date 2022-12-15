@@ -1,0 +1,54 @@
+﻿@model List<Facility>
+@{
+	ViewData["title"] = "Facility Management";
+}
+
+<div class="text-center mb-3">
+	<h1 class="display-6">Facility List</h1>
+</div>
+
+<div class="container-fluid">
+	<div class="mb-3 text-end">
+		<a class="btn btn-primary" asp-action="Create">Add More Facility</a>
+	</div>
+	<table class="table table-hover table-striped">
+		<tr>
+			<th>Preview</th>
+			<th>Id</th>
+			<th>Name</th>
+			<th>Image URL</th>
+			<th></th>
+		</tr>
+		@if(Model != null){
+			@foreach (var fac in Model)
+			{
+				<tr>
+					<td>
+						<img src=@("~/images/" + fac.ImageUrl) width="100" height="100" asp-append-version=true>
+					</td>
+					<td>
+						@fac.FacId
+					</td>
+					<td>
+						@fac.Name
+					</td>
+					<td>
+						@fac.ImageUrl
+					</td>
+					<td>
+						<a class="btn btn-warning" asp-controller="FacilityManage" asp-action="Edit" asp-route-id="@fac.FacId">Edit</a>
+						<form method="post" asp-action="Delete">
+							<input type="hidden" name="id" value="@fac.FacId">
+							<input class="btn btn-danger" type="submit" value="Delete">
+						</form>
+					</td>
+				</tr>
+			}
+		}
+		else{
+			<tr>
+				<td>No rows</td>
+			</tr>
+		}
+	</table>
+</div>

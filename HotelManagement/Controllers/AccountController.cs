@@ -9,6 +9,7 @@ using System.Security.Claims;
 
 namespace HotelManagement.Controllers
 {
+    [Route("[controller]/[action]")]
     public class AccountController : Controller
     {
         private readonly AppDbContext _context;
@@ -18,6 +19,7 @@ namespace HotelManagement.Controllers
             _context = context;
         }
 
+        [HttpGet]
         public IActionResult Login(string ReturnUrl = "/")
         {
             LoginViewModel loginModel = new LoginViewModel() { ReturnUrl = ReturnUrl };
@@ -33,9 +35,14 @@ namespace HotelManagement.Controllers
                 return View(loginModel);
             }
 
-            var user = _context.Accounts.FirstOrDefault(x => x.Username == loginModel.Username && x.Password == loginModel.Password);
+            if(User.Identity!.IsAuthenticated)
+            {
+                return LocalRedirect("/");
+            }
 
-            if (user == null)
+            var account = _context.Accounts.FirstOrDefault(x => x.Username == loginModel.Username && x.Password == loginModel.Password);
+
+            if (account == null)
             {
                 ViewBag.Message = "Invalid username or password!";
                 return View(loginModel);
@@ -43,9 +50,9 @@ namespace HotelManagement.Controllers
 
             var claims = new List<Claim>()
             {
-                new Claim(ClaimTypes.NameIdentifier, Convert.ToString(user.AccId)),
-                new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.Role, user.RoleName),
+                new Claim(ClaimTypes.NameIdentifier, Convert.ToString(account.AccId)),
+                new Claim(ClaimTypes.Name, account.Username),
+                new Claim(ClaimTypes.Role, account.RoleName),
             };
 
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -59,12 +66,14 @@ namespace HotelManagement.Controllers
             return LocalRedirect(loginModel.ReturnUrl);
         }
 
+        [HttpDelete]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return LocalRedirect("/");
         }
 
+        [HttpGet]
         public IActionResult Register()
         {
             var account = new Account() { RoleName = "customer" };
@@ -97,6 +106,14 @@ namespace HotelManagement.Controllers
             return LocalRedirect("/Account/Login");
         }
 
+        [HttpPut]
+        public async Task<IActionResult> ChangePassword()
+        {
+            //todo
+            return LocalRedirect("/Account/Login");
+        }
+
+        [HttpGet]
         public IActionResult AccessDenied()
         {
             return LocalRedirect("/");

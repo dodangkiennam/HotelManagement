@@ -17,7 +17,7 @@ namespace HotelManagement.Models
 
         public string RoleName { get; set; }
         
-        [DataType(DataType.Date)]
+        [DataType(DataType.DateTime)]
         public DateTime CreateDate { get; set; }
     }
 }

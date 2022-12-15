@@ -18,7 +18,7 @@ namespace HotelManagement.Controllers
         {
             if (User.HasClaim(ClaimTypes.Role, "manager"))
             {
-                return LocalRedirect("/Manager/HotelStatistic");
+                return RedirectToAction("Index", "Statistics");
             }
 
             return View();

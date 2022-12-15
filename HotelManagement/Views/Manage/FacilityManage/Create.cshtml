@@ -1,0 +1,43 @@
+﻿@model CreateFacilityViewModel
+
+@{
+	ViewData["title"] = "Create - Facility Management";
+}
+
+<div class="text-center mb-3">
+	<h1 class="display-6">Add new Facility</h1>
+</div>
+
+<div class="container-fluid">
+	<div class="mb-3">
+		<a class="btn btn-info" asp-action="Index">Back to list</a>
+	</div>
+	<div class="row">
+		<div class="col-md-4">
+		<form method="post" enctype="multipart/form-data">
+			<div asp-validation-summary="ModelOnly"></div>
+			@if (!string.IsNullOrEmpty(ViewBag.Message))
+			{
+				<span class="text-danger">
+					@ViewBag.Message
+				</span>
+			}
+			@Html.HiddenFor(x => x.Facility.ImageUrl)
+			<div class="mb-3">
+				<label asp-for="Facility.Name" class="form-label">Facility Name</label>
+				<input asp-for="Facility.Name" class="form-control" />
+				<span asp-validation-for="Facility.Name" class="text-danger"></span>
+			</div>
+			<div class="mb-3">
+				<label asp-for="ImageFile" class="form-label">Choose Image</label>
+				<input asp-for="ImageFile" class="form-control" accept="image/*" />
+				<span asp-validation-for="ImageFile" class="text-danger"></span>
+			</div>
+			<div class="mb-3">
+				<input type="submit" value="Add" class="btn btn-primary" />
+			</div>
+		</form>
+	</div>
+	</div>
+</div>
+

@@ -66,7 +66,7 @@ namespace HotelManagement.Controllers
             return LocalRedirect(loginModel.ReturnUrl);
         }
 
-        [HttpDelete]
+        [HttpPost]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);

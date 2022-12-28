@@ -11,6 +11,9 @@ namespace HotelManagement.Models
         public int RoomTypeId { get; set; }
 
         [Required]
+        public string ImageName { get; set; }
+
+        [Required]
         public string ImageUrl { get; set; }
 
         [DataType(DataType.DateTime)]

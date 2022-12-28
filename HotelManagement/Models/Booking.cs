@@ -9,13 +9,22 @@ namespace HotelManagement.Models
         public int BookingId { get; set; }
 
         [ForeignKey("CusId")]
-        public Customer Customer { get; set; }
+        public virtual Customer? Customer { get; set; }
         [Required]
         public int CusId { get; set; }
 
         [ForeignKey("EmpId")]
-        public Employee? Employee { get; set; }
+        public virtual Employee? Employee { get; set; }
         public int? EmpId { get; set; }
+
+        [ForeignKey("RoomTypeId")]
+        public virtual RoomType? RoomType { get; set; }
+        [Required]
+        public int RoomTypeId { get; set; }
+
+        [Required]
+        [Range(1, 50)]
+        public int RoomAmount { get; set; }
 
         [DataType(DataType.DateTime)]
         public DateTime CreateDate { get; set; }
@@ -30,7 +39,6 @@ namespace HotelManagement.Models
 
         public string Status { get; set; }
 
-        public virtual List<OccupiedRoom> OccupiedRooms { get; set; }
-        public virtual List<BookingDetail> BookingDetails { get; set; }
+        public virtual List<OccupiedRoom>? OccupiedRooms { get; set; }
     }
 }

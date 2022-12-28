@@ -6,12 +6,12 @@ namespace HotelManagement.Models
     public class FacilityApply
     {
         [ForeignKey("FacId")]
-        public virtual Facility Facility { get; set; }
+        public virtual Facility? Facility { get; set; }
         [Required]
         public int FacId { get; set; }
 
         [ForeignKey("RoomTypeId")]
-        public virtual RoomType RoomType { get; set; }
+        public virtual RoomType? RoomType { get; set; }
         [Required]
         public int RoomTypeId { get; set; }
 

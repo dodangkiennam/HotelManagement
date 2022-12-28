@@ -20,9 +20,9 @@ namespace HotelManagement.Models
 
         public string? Description { get; set; }
 
-        public virtual List<RoomTypeImage> RoomTypeImages { get; set; }
-        public virtual List<BookingDetail> BookingDetails { get; set; }
-        public virtual List<FacilityApply> FacilityApplies { get; set; }
-        public virtual List<Room> Rooms { get; set; }
+        public virtual List<RoomTypeImage>? RoomTypeImages { get; set; }
+        public virtual List<Booking>? Bookings { get; set; }
+        public virtual List<FacilityApply>? FacilityApplies { get; set; }
+        public virtual List<Room>? Rooms { get; set; }
     }
 }

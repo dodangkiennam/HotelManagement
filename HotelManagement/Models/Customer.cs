@@ -31,6 +31,6 @@ namespace HotelManagement.Models
         [MaxLength(10)]
         public string CountryCode { get; set; }
 
-        public virtual List<Booking> Bookings { get; set; }
+        public virtual List<Booking>? Bookings { get; set; }
     }
 }

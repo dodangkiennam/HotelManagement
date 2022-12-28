@@ -20,6 +20,15 @@
 				<input asp-for=Name class="form-control" />
 				<span asp-validation-for=Name class="text-danger"></span>
 			</div>
+            <div class="mb-3">
+				<label asp-for=Gender class="form-label">Gender</label>
+                <select class="form-control" asp-for=Gender>
+                    <option value="" selected>Choose your gender</option>
+                    <option value="female">Female</option>
+                    <option value="male">Male</option>
+                </select>
+				<span asp-validation-for=Gender class="text-danger"></span>
+			</div>
 			<div class="mb-3">
 				<label asp-for=CitizencardId class="form-label">Citizend Card ID</label>
 				<input asp-for=CitizencardId class="form-control" />

@@ -23,6 +23,6 @@ namespace HotelManagement.Models
 
         public double Salary { get; set; }
 
-        public virtual List<Booking> Bookings { get; set; }
+        public virtual List<Booking>? Bookings { get; set; }
     }
 }

@@ -1,9 +1,10 @@
 ﻿using HotelManagement.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace HotelManagement.Controllers.Manage
 {
-    [Route("Manage/[controller]/[action]")]
+    [Route("Manage/Employee/[action]")]
     public class EmployeeManageController : Controller
     {
         private readonly AppDbContext _context;
@@ -18,9 +19,13 @@ namespace HotelManagement.Controllers.Manage
             return $"~/Views/Manage/EmployeeManage/{viewName}.cshtml";
         }
 
-        public IActionResult Index()
+        [HttpGet]
+        [Route("/Manage/Employee")]
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var list = await _context.Employees.ToListAsync();
+
+            return View(GetViewPath("Index"), list);
         }
     }
 }

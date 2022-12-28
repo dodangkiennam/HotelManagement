@@ -1,0 +1,162 @@
+﻿@model CreateRoomTypeViewModel
+
+@{
+	ViewData["title"] = "Create - Room Type Management";
+}
+
+<div class="text-center mb-3">
+	<h1 class="display-6">Create Room Type</h1>
+</div>
+
+<div class="container-fluid">
+	<div class="">
+		<form asp-action="Create" method="post" enctype="multipart/form-data">
+			<div class="row">
+				<div class="col-md-6">
+					<div asp-validation-summary="ModelOnly"></div>
+					@if (!string.IsNullOrEmpty(ViewBag.Message))
+					{
+						<span class="text-danger">
+							@ViewBag.Message
+						</span>
+					}
+					<div class="mb-3">
+						<label asp-for="RoomType.Name" class="form-label">Room Type Name</label>
+						<input asp-for="RoomType.Name" class="form-control" />
+						<span asp-validation-for="RoomType.Name" class="text-danger"></span>
+					</div>
+					<div class="mb-3">
+						<label asp-for="RoomType.Price" class="form-label">Price</label>
+						<input type="number" asp-for="RoomType.Price" class="form-control" />
+						<span asp-validation-for="RoomType.Price" class="text-danger"></span>
+					</div>
+					<div class="mb-3">
+						<label asp-for="RoomType.Quantity" class="form-label">Quantity</label>
+						<input type="number" asp-for="RoomType.Quantity" class="form-control" />
+						<span asp-validation-for="RoomType.Quantity" class="text-danger"></span>
+					</div>
+					<div class="mb-3">
+						<label asp-for="RoomType.MaxAdult" class="form-label">Max Adult</label>
+						<input type="number" asp-for="RoomType.MaxAdult" class="form-control" />
+						<span asp-validation-for="RoomType.MaxAdult" class="text-danger"></span>
+					</div>
+					<div class="mb-3">
+						<label asp-for="RoomType.MaxChild" class="form-label">Max Child</label>
+						<input type="number" asp-for="RoomType.MaxChild" class="form-control" />
+						<span asp-validation-for="RoomType.MaxChild" class="text-danger"></span>
+					</div>
+					<div class="mb-3">
+						<label asp-for="RoomType.Description" class="form-label text">Description</label>
+						<textarea type="number" asp-for="RoomType.Description" class="form-control"></textarea>
+						<span asp-validation-for="RoomType.Description" class="text-danger"></span>
+					</div>
+					<div class="mb-3">
+						<input id="image_count" type="hidden" value="0" name="imageCount" />
+						<div id="images_container">
+							<!-- Images go here-->
+						</div>
+						<button type="button" class="btn btn-success mb-3" id="add-img-btn">Add Image</button>
+					</div>
+					<input class="btn btn-primary" type="submit" value="Create" />
+				</div>
+				<div class="col-md-6 border-start">
+					<input id="fac_count" type="hidden" value="1" name="facCount" />
+					<div id="facs_container">
+						<!-- Facilities go here-->
+						<div class="row mb-3">
+							<input type="hidden" name="FacilityApplies.Index" value="0" />
+							<div class="col-md-7">
+								<label class="form-label" for="FacilityApplies[0].FacId">Select Facility</label>
+								<select class="form-select" id="FacilityApplies[0].FacId" name="FacilityApplies[0].FacId">
+									@foreach(var fac in ViewBag.ListOfFacs)
+									{
+										<option value="@fac.FacId">@fac.Name</option>
+									}
+								</select>
+							</div>
+							<div class="col-md-3">
+								<label class="form-label" for="FacilityApplies[0].Amount">Amount</label>
+								<input class="form-control" required type="number" id="FacilityApplies[0].Amount" name="FacilityApplies[0].Amount" value="1" min="1" max="10">
+							</div>
+							<div class="col-md-2">
+								<button class="btn btn-danger form-control mt-2" type="button" onclick="onRemoveImage(this)">X</button>
+							</div>
+						</div>
+
+					</div>
+					<button type="button" class="btn btn-success mb-3" id="add-fac-btn">Add Facility</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
+@section Scripts{
+	<script>
+		function onRemoveImage(e){
+			e.parentElement.parentElement.remove();
+		}
+
+		function onRemoveFac(e){
+			e.parentElement.parentElement.remove();
+		}
+
+		document.getElementById("add-img-btn").addEventListener("click", ()=>{
+			const count = parseInt(document.getElementById("image_count").value);
+
+			var newImageRow = document.createElement("div");
+
+			newImageRow.innerHTML = `
+				<input type="hidden" name="Images.Index" value="${count}"/>
+				<div class="col-md-3">
+					<label class="form-label" for="Images[${count}]">Select Image</label>
+					<input required type="file" class="form-control" id="Images[${count}]" name="Images[${count}].ImageFile" accept="image/*"/>
+				</div>
+				<div class="col-md-7">
+					<label class="form-label" for="ImageNames[${count}]">Image Name</label>
+					<input required type="text" class="form-control" id="ImageNames[${count}]" name="Images[${count}].ImageName"/>
+				</div>
+				<div class="col-md-2">
+					<button class="btn btn-danger form-control mt-2" type="button" onclick="onRemoveImage(this)">X</button>
+				</div>`;
+
+			newImageRow.className = "row mb-3";
+
+			document.getElementById("images_container").appendChild(newImageRow);
+			document.getElementById("image_count").value = count + 1;
+		});
+
+		const facs = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.ListOfFacs));
+		let facToOptions = '';
+		if(facs.length > 0){
+			facs.forEach(fac => facToOptions += `<option value="${fac.FacId}">${fac.Name}</option>`);
+		}
+
+
+		document.getElementById("add-fac-btn").addEventListener("click", () => {
+			const count = parseInt(document.getElementById("fac_count").value);
+			
+			var newFacRow = document.createElement("div");
+			newFacRow.innerHTML = `
+				<input type="hidden" name="FacilityApplies.Index" value="${count}" />
+				<div class="col-md-7">
+					<label class="form-label" for="FacilityApplies[${count}].FacId">Select Facility</label>
+					<select class="form-select" id="FacilityApplies[${count}].FacId" name="FacilityApplies[${count}].FacId">
+						${facToOptions}
+					</select>
+				</div>
+				<div class="col-md-3">
+					<label class="form-label" for="FacilityApplies[${count}].Amount">Amount</label>
+					<input class="form-control" required type="number" id="FacilityApplies[${count}].Amount" name="FacilityApplies[${count}].Amount" value="1" min="1" max="10">
+				</div>
+				<div class="col-md-2">
+					<button class="btn btn-danger form-control mt-2" type="button" onclick="onRemoveImage(this)">X</button>
+				</div>`;
+
+			newFacRow.className = "row mb-3";
+
+			document.getElementById("facs_container").appendChild(newFacRow);
+			document.getElementById("fac_count").value = count + 1;
+		});
+	</script>
+}

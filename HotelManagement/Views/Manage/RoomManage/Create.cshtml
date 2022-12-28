@@ -1,0 +1,53 @@
+﻿@model Room
+
+@{
+	ViewData["title"] = "Create - Room Management";
+}
+
+<div class="text-center mb-3">
+	<h1 class="display-6">Add new Room</h1>
+</div>
+
+<div class="container-fluid">
+	<div class="mb-3">
+		<a class="btn btn-info" asp-action="Index">Back to list</a>
+	</div>
+	<div class="row">
+		<div class="col-md-8">
+			<form method="post" enctype="multipart/form-data">
+				<div asp-validation-summary="ModelOnly"></div>
+				@if (!string.IsNullOrEmpty(ViewBag.Message))
+				{
+					<span class="text-danger">
+						@ViewBag.Message
+					</span>
+				}
+				<div class="mb-3">
+					<label asp-for="RoomNo" class="form-label">Room Number</label>
+					<input asp-for="RoomNo" class="form-control" />
+					<span asp-validation-for="RoomNo" class="text-danger"></span>
+				</div>
+				<div class="mb-3">
+					<label asp-for="RoomTypeId" class="form-label">Choose Type for Room</label>
+					<select asp-for="RoomTypeId" class="form-select">
+						@foreach (var roomType in ViewBag.roomTypes)
+						{
+							<option value="@roomType.RoomTypeId">
+								@roomType.Name - Max Adult: @roomType.MaxAdult - Max Child: @roomType.MaxChild - Price: @roomType.Price
+							</option>
+						}
+					</select>
+				</div>
+				<div class="mb-3">
+					<label asp-for="Description" class="form-label">Description</label>
+					<input asp-for="Description" class="form-control"/>
+					<span asp-validation-for="Description" class="text-danger"></span>
+				</div>
+				<div class="mb-3">
+					<input type="submit" value="Add" class="btn btn-primary" />
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+

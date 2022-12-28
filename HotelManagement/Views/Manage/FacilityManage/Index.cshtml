@@ -11,7 +11,7 @@
 	<div class="mb-3 text-end">
 		<a class="btn btn-primary" asp-action="Create">Add More Facility</a>
 	</div>
-	<table class="table table-hover table-striped">
+	<table class="table table-light">
 		<tr>
 			<th>Preview</th>
 			<th>Id</th>
@@ -24,7 +24,9 @@
 			{
 				<tr>
 					<td>
-						<img src=@("~/images/" + fac.ImageUrl) width="100" height="100" asp-append-version=true>
+						<div style="width: 50px; height: 50px; overflow: hidden;">
+							<img style="height: 100%; width: 100%; object-fit: cover;" src=@("~/images/" + fac.ImageUrl) asp-append-version=true>
+						</div>
 					</td>
 					<td>
 						@fac.FacId
@@ -35,12 +37,14 @@
 					<td>
 						@fac.ImageUrl
 					</td>
-					<td>
-						<a class="btn btn-warning" asp-controller="FacilityManage" asp-action="Edit" asp-route-id="@fac.FacId">Edit</a>
-						<form method="post" asp-action="Delete">
-							<input type="hidden" name="id" value="@fac.FacId">
-							<input class="btn btn-danger" type="submit" value="Delete">
-						</form>
+					<td class="col-md-2">
+						<div class="d-flex">
+							<a class="btn btn-warning me-3" asp-controller="FacilityManage" asp-action="Edit" asp-route-id="@fac.FacId">Edit</a>
+							<form method="post" asp-action="Delete">
+								<input type="hidden" name="id" value="@fac.FacId">
+								<input class="btn btn-danger" type="submit" value="Delete">
+							</form>
+						</div>
 					</td>
 				</tr>
 			}

@@ -5,14 +5,13 @@ namespace HotelManagement.Models
 {
     public class OccupiedRoom
     {
-        [ForeignKey("RoomId")]
-        public Room Room { get; set; }
-        [Required]
-        public int RoomId { get; set; }
+        [ForeignKey("RoomNo")]
+        public virtual Room? Room { get; set; }
+        [StringLength(10)]
+        public string? RoomNo { get; set; }
 
         [ForeignKey("BookingId")]
-        public Booking Booking { get; set; }
-        [Required]
-        public int BookingId { get; set; }
+        public virtual Booking? Booking { get; set; }
+        public int? BookingId { get; set; }
     }
 }

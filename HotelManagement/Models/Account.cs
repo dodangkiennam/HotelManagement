@@ -15,6 +15,7 @@ namespace HotelManagement.Models
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
+        [Required]
         public string RoleName { get; set; }
         
         [DataType(DataType.DateTime)]

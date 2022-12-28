@@ -67,7 +67,7 @@ namespace HotelManagement.Controllers.Manage
             }
 
             //Insert record
-            _context.Facilities.Add(model.Facility);
+            await _context.Facilities.AddAsync(model.Facility);
             await _context.SaveChangesAsync();
 
             return LocalRedirect("/Manage/Facility/Create");

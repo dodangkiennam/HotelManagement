@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using System.Net.Mail;
 
 namespace HotelManagement.Controllers
 {
@@ -117,6 +118,77 @@ namespace HotelManagement.Controllers
         public IActionResult AccessDenied()
         {
             return LocalRedirect("/");
+        }
+
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult ForgotPassword(string email)
+        {
+            var cus = _context.Customers.Where(c => c.Email.Equals(email)).FirstOrDefault();
+            if (cus == null)
+            {
+                ViewBag.Message = "Invalid Email!";
+                return View(email);
+            }
+
+            SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 25);
+
+            smtpClient.Credentials = new System.Net.NetworkCredential("20521627@gm.uit.edu.vn", "Kn050320021627");
+            smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+            smtpClient.EnableSsl = true;
+            MailMessage mail = new MailMessage();
+
+            //Setting From , To and CC
+            mail.From = new MailAddress("20521627@gm.uit.edu.vn", "UIT Hotel");
+            mail.To.Add(new MailAddress(email));
+            mail.Subject = "UIT Hotel - Reset password";
+            mail.Body = "<h4>Click button below to reset your password!</h4></br><form method=\"post\" action=\"https://localhost:7116/Account/ResetPassword/\"><input type=\"hidden\" name=\"AccId\" value=\"" + cus.AccId.ToString() + "\"><button type=\"submit\">Reset</button></form>";
+            mail.IsBodyHtml = true;
+            smtpClient.Send(mail);
+            return LocalRedirect("/Account/SendEmailSuccess");
+        }
+
+        public IActionResult SendEmailSuccess()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult ResetPassword(int AccId)
+        {
+            var account = _context.Accounts.Where(a => a.AccId == AccId).FirstOrDefault();
+
+            if (account == null) {
+                return LocalRedirect("/Account/Login");
+            }
+
+            return View(account);
+        }
+
+        [HttpPost]
+        public IActionResult ConfirmedResetPassword(int AccId, string password, string repassword)
+        {
+            if(password != repassword)
+            {
+                ViewBag.Message = "Repassword incorrect!";
+                return View();
+            }
+
+            var account = _context.Accounts.Where(a => a.AccId == AccId).FirstOrDefault();
+
+            if (account == null)
+            {
+                return LocalRedirect("/Account/Login");
+            }
+
+            account.Password = password;
+            _context.SaveChanges();
+
+            return LocalRedirect("/Account/Login");
         }
     }
 }

@@ -1,0 +1,41 @@
+﻿@model CreateServiceViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="text-center mb-3">
+    <h1 class="display-6">Create new Service</h1>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="mb-3">
+                <label asp-for="Service.Name" class="control-label"></label>
+                <input asp-for="Service.Name" class="form-control" />
+                <span asp-validation-for="Service.Name" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="ImageFile" class="form-label">Choose Image</label>
+                <input asp-for="ImageFile" class="form-control" accept="image/*" />
+                <span asp-validation-for="ImageFile" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Service.Price" class="control-label"></label>
+                <input asp-for="Service.Price" class="form-control" />
+                <span asp-validation-for="Service.Price" class="text-danger"></span>
+            </div>
+            <input hidden value="none" asp-for="Service.ImageUrl" class="form-control" />
+            <div class="mb-3">
+                <a class="btn btn-info" asp-action="Index">Back to List</a>
+                <input type="submit" value="Create" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

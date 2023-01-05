@@ -15,7 +15,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-5">
-            <div id="carouselExampleDark" class="carousel slide" data-bs-ride="carousel">
+            <div style="width: 500px; height: 400px; overflow: hidden;" id="carouselExampleDark" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-indicators">
                     <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
                     @for(int i=1; i<Model.roomTypeImages.Count; i++){
@@ -26,8 +26,8 @@
                     @for (int i = 0; i < Model.roomTypeImages.Count; i++)
                     {
                         <div class="carousel-item @(i == 0 ? "active" : "")">
-                            <div style="width: 100%; height: 100%; overflow: hidden;">
-                                <img style="height: 400px; width: 400px; object-fit: contain;" src=@("~/images/" + Model.roomTypeImages[i].ImageUrl) class="d-block w-100" alt="" asp-append-version=true>
+                            <div class="border rounded-3" style="width: 500px; height: 400px; overflow: hidden; object-position: center;">
+                                <img style="max-height: 100%; max-width: 100%; object-fit: cover;" src=@("~/images/" + Model.roomTypeImages[i].ImageUrl) class="d-block w-100" alt="" asp-append-version=true>
                             </div>
                             <div class="carousel-caption d-block">
                                 <h5>@Model.roomTypeImages[i].ImageName</h5>
@@ -36,11 +36,11 @@
                     }
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="carousel-control-prev-icon bg-dark rounded-circle" aria-hidden="true"></span>
                     <span class="visually-hidden">Previous</span>
                 </button>
                 <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="carousel-control-next-icon bg-dark rounded-circle" aria-hidden="true"></span>
                     <span class="visually-hidden">Next</span>
                 </button>
             </div>
@@ -71,11 +71,11 @@
             </table>
             <h5 class="fw-normal">Facilities</h5>
             <table class="table table-light">
-                <tr>
+                @*<tr>
                     <th>Preview</th>
                     <th>Name</th>
                     <th>Amount</th>
-                </tr>
+                </tr>*@
                 @foreach (var fac in Model.facilities)
                 {
                     <tr>

@@ -1,0 +1,231 @@
+﻿@model Booking
+
+@{
+	ViewData["title"] = "Booking - Details";
+}
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Confirm Cancel</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				Do you want to cancel this booking?
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Ignore</button>
+				<a class="btn btn-primary" asp-action="Cancel" asp-route-id="@Model.BookingId">Confirm</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Cancel Fail</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				You can not cancel now. Please contact to our service for this 
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Got It</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="feedBack" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form method="post" asp-action="SendFeedback" enctype="multipart/form-data">
+				<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Send your feedback</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="mb-3">
+					<label class="form-label" for="rating">Rate our service</label>
+					<input class="form-control" id="rating" name="Rating" type="number" min="0" max="5" value="5" />
+				</div>
+				<div class="mb-3">
+					<label class="form-label" for="content">Your opinion</label>
+					<textarea class="form-control" id="content" name="Content"></textarea>
+				</div>
+				<div class="mb-3">
+					<label class="form-label" for="Images">Select your images</label>
+					<input class="form-control" type="file" id="Images" name="Images" multiple accept="image/*" />
+				</div>
+				<input type="hidden" name="BookingId" value="@Model.BookingId" />
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+				<button class="btn btn-success" type="submit">Send</button>
+			</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div class="text-center mb-3">
+	<h1 class="display-6">Booking Details</h1>
+</div>
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-6 mx-auto">
+			<table class="table table-bordered caption-top table-bordered">
+				<caption>Room Information</caption>
+				<tr>
+					<td class="col-sm-4">Room No</td>
+					<td class="col-sm-8">@(Model.RoomNo != null ? Model.RoomNo : "")</td>
+				</tr>
+				<tr>
+					<td class="col-sm-4">Room Type</td>
+					<td class="col-sm-8">@Model.RoomType.Name</td>
+				</tr>
+				<tr>
+					<td class="col-sm-4">Max Adult</td>
+					<td class="col-sm-8">@Model.RoomType.MaxAdult</td>
+				</tr>
+				<tr>
+					<td class="col-sm-4">Max Child</td>
+					<td class="col-sm-8">@Model.RoomType.MaxChild</td>
+				</tr>
+				<tr>
+					<td class="col-sm-4">Price for Room</td>
+					<td class="col-sm-8">@(Model.RoomType.Price)$</td>
+				</tr>
+			</table>
+			<table class="table table-bordered caption-top table-bordered">
+				<caption>Booking Information</caption>
+				<tr>
+					<td class="col-sm-4">Booking Id</td>
+					<td class="col-sm-8">@Model.BookingId</td>
+				</tr>
+				<tr>
+					<td class="col-sm-4">Create Date</td>
+					<td class="col-sm-8">@Model.CreateDate.ToShortDateString()</td>
+				</tr>
+				<tr>
+					<td class="col-sm-4">Check In Date</td>
+					<td class="col-sm-8">@Model.CheckIn.ToShortDateString()</td>
+				</tr>
+				<tr>
+					<td class="col-sm-4">Check Out Date</td>
+					<td class="col-sm-8">@Model.CheckOut.ToShortDateString()</td>
+				</tr>
+				<tr>
+					<td class="col-sm-4">Total (@((Model.CheckOut - Model.CheckIn).TotalDays) days)</td>
+					<td class="col-sm-8">@Model.TotalPrice$</td>
+				</tr>
+				<tr>
+					<td class="col-sm-4">Status</td>
+					<td class="col-sm-8">@Model.Status</td>
+				</tr>
+				
+				<tr>
+					<td>Checking Employee</td>
+					<td class="col-sm-8">@(Model.Employee != null ? Model.Employee.Name : "")</td>
+				</tr>
+			</table>
+			<table class="table caption-top table-bordered" id="sortTable">
+				<caption>Order Services</caption>
+				<thead>
+					<tr>
+						<th>Order Time</th>
+						<th>Service Name</th>
+						<th>Amount</th>
+						<th>Price Each</th>
+						@if (Model.Status == "CHECKED_IN")
+						{
+							<th></th>
+						}
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var s in ViewBag.ListOfBookingServices)
+					{
+						<tr>
+							<td>@s.OrderTime</td>
+							<td>@s.Service.Name</td>
+							<td>@s.Amount</td>
+							<td>@s.Service.Price$</td>
+							@if (Model.Status == "CHECKED_IN")
+							{
+								<td>
+									<a class="btn btn-danger" asp-action="DeleteService" asp-route-OrderTime="@s.OrderTime" asp-route-BookingId="@s.BookingId" asp-route-ServiceId="@s.ServiceId">Delete</a>
+								</td>
+							}
+						</tr>
+					}
+					<tr>
+						<td>Total for Services: @ViewBag.TotalForServices</td>
+					</tr>
+				</tbody>
+			</table>
+			<table class="table caption-top table-bordered">
+				<caption>Total Price</caption>
+				<tr>
+					<th>Total: @ViewBag.TotalPrice</th>
+				</tr>
+			</table>
+			@if(Model.FeedBack != null){
+				<table class="table caption-top table-bordered">
+					<caption>Your Feedback</caption>
+					<tr>
+						<td>Star: @Model.FeedBack.Rating - Opinion: @Model.FeedBack.Content - Time: @Model.FeedBack.CreateDate</td>
+					</tr>
+					<tr>
+						<td class="d-flex">
+							@foreach(var img in ViewBag.feedbackImages){
+								<div class="me-3 bg-black" style="width: 100px; height: 100px; overflow: hidden; object-position: center;">
+									<img src=@("~/images/" + img.ImageUrl) style="cursor:zoom-in" asp-append-version=true>
+								</div>
+							}
+						</td>
+					</tr>
+				</table>
+			}
+			<div class="row mt-3">
+				<div class="ms-auto">
+					<a class="btn btn-primary" asp-action="History">Back To List</a>
+					@if (DateTime.Compare(DateTime.Now, Model.CheckIn) < 0 && (Model.Status == "REQUEST_BOOKING" || Model.Status == "BOOKING_SUCCESS"))
+					{
+						<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="@(Model.Status == "REQUEST_BOOKING" ? "#exampleModal" : "#exampleModal2")">
+							Cancel Booking
+						</button>
+					}
+					@if (Model.Status == "CHECKED_OUT")
+					{
+						<a class="btn btn-success" asp-controller="BookingManage" asp-action="PrintInvoice" asp-route-id="@Model.BookingId">Print Invoice</a>
+					}
+					@if (Model.FeedBack == null && Model.Status == "CHECKED_OUT")
+					{
+						<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#feedBack">
+							Send FeedBack
+						</button>
+					}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section Scripts{
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css">
+	<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+	<script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+	<script>
+		$(function(){
+			$('img').on('click', function(){
+				$(`#${$(this).attr('data-img')}`).modal('show');
+			})
+		});
+	</script>
+}
+

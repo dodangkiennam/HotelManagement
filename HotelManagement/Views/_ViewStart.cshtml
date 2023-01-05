@@ -4,6 +4,10 @@
     {
         Layout = "_Layout_Manager";
     }
+    else if (User.HasClaim(ClaimTypes.Role, "employee"))
+    {
+        Layout = "_Layout_Employee";
+    }
     else{
         Layout = "_Layout";
     }

@@ -3,10 +3,17 @@
 	ViewData["Title"] = "Register";
 }
 
-<h1 class="display-6">Register</h1>
-<hr class="display-6"/>
-<div class="row">
-	<div class="col-md-4">
+<style>
+	.nice-select{
+		width: auto;
+		float: inherit;
+	}
+</style>
+
+<div class="container-fluid">
+    <h1 class="display-6 text-center">Register</h1>
+	<div class="row">
+	<div class="col-md-4 mx-auto">
 		<form method="post">
 			<div asp-validation-summary="ModelOnly"></div>
 			@if (!string.IsNullOrEmpty(ViewBag.Message))    
@@ -22,7 +29,7 @@
 			</div>
             <div class="mb-3">
 				<label asp-for=Gender class="form-label">Gender</label>
-                <select class="form-control" asp-for=Gender>
+                <select class="form-control mb-3" asp-for=Gender>
                     <option value="" selected>Choose your gender</option>
                     <option value="female">Female</option>
                     <option value="male">Male</option>
@@ -41,7 +48,7 @@
 			</div>
 			<div>
                 <label asp-for=CountryCode class="form-label"></label>
-				<select asp-for=CountryCode class="form-select">
+				<select asp-for=CountryCode class="form-control mb-3">
                     <option value="AF">Afghanistan</option>
                     <option value="AX">Aland Islands</option>
                     <option value="AL">Albania</option>
@@ -317,4 +324,5 @@
 			</div>
 		</form>
 	</div>
+</div>
 </div>

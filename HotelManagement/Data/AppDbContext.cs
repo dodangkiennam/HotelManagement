@@ -14,8 +14,11 @@ namespace HotelManagement.Data
         {
             modelBuilder.Entity<RoomTypeImage>().HasKey(nameof(RoomTypeImage.RoomTypeId), nameof(RoomTypeImage.ImageUrl));
             modelBuilder.Entity<FacilityApply>().HasKey(nameof(FacilityApply.FacId), nameof(FacilityApply.RoomTypeId));
-            modelBuilder.Entity<OccupiedRoom>().HasKey(nameof(OccupiedRoom.RoomNo), nameof(OccupiedRoom.BookingId));
-            modelBuilder.Entity<Room>().HasMany(o => o.OccupiedRooms).WithOne(o => o.Room).OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<BookingService>().HasKey(nameof(BookingService.ServiceId), nameof(BookingService.BookingId), nameof(BookingService.OrderTime));
+            modelBuilder.Entity<FeedbackImage>().HasKey(nameof(FeedbackImage.FeedbackId), nameof(FeedbackImage.ImageUrl));
+
+            modelBuilder.Entity<Room>().HasMany(o => o.Bookings).WithOne(o => o.Room).OnDelete(DeleteBehavior.NoAction);
         }
 
         public DbSet<Account> Accounts { get; set; }
@@ -26,7 +29,10 @@ namespace HotelManagement.Data
         public DbSet<Facility> Facilities { get; set; }
         public DbSet<FacilityApply> FacilityApplies { get; set; }
         public DbSet<Room> Rooms { get; set; }
-        public DbSet<OccupiedRoom> OccupiedRooms { get; set; }
         public DbSet<Booking> Bookings { get; set; }
+        public DbSet<Service> Services { get; set; }
+        public DbSet<BookingService> BookingServices { get; set; }
+        public DbSet<FeedBack> FeedBacks { get; set; }
+        public DbSet<FeedbackImage> FeedbackImages { get; set; }
     }
 }

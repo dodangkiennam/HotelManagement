@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HotelManagement.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20221228154944_m1")]
+    [Migration("20230102132946_m1")]
     partial class m1
     {
         /// <inheritdoc />
@@ -76,8 +76,15 @@ namespace HotelManagement.Migrations
                     b.Property<int?>("EmpId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("FeedbackId")
+                        .HasColumnType("int");
+
                     b.Property<int>("RoomAmount")
                         .HasColumnType("int");
+
+                    b.Property<string>("RoomNo")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<int>("RoomTypeId")
                         .HasColumnType("int");
@@ -95,9 +102,34 @@ namespace HotelManagement.Migrations
 
                     b.HasIndex("EmpId");
 
+                    b.HasIndex("FeedbackId");
+
+                    b.HasIndex("RoomNo");
+
                     b.HasIndex("RoomTypeId");
 
                     b.ToTable("Bookings");
+                });
+
+            modelBuilder.Entity("HotelManagement.Models.BookingService", b =>
+                {
+                    b.Property<int>("ServiceId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BookingId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("OrderTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Amount")
+                        .HasColumnType("int");
+
+                    b.HasKey("ServiceId", "BookingId", "OrderTime");
+
+                    b.HasIndex("BookingId");
+
+                    b.ToTable("BookingServices");
                 });
 
             modelBuilder.Entity("HotelManagement.Models.Customer", b =>
@@ -220,20 +252,40 @@ namespace HotelManagement.Migrations
                     b.ToTable("FacilityApplies");
                 });
 
-            modelBuilder.Entity("HotelManagement.Models.OccupiedRoom", b =>
+            modelBuilder.Entity("HotelManagement.Models.FeedBack", b =>
                 {
-                    b.Property<string>("RoomNo")
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<int?>("BookingId")
+                    b.Property<int>("FeedbackId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.HasKey("RoomNo", "BookingId");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FeedbackId"));
 
-                    b.HasIndex("BookingId");
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("OccupiedRooms");
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("Rating")
+                        .HasColumnType("float");
+
+                    b.HasKey("FeedbackId");
+
+                    b.ToTable("FeedBacks");
+                });
+
+            modelBuilder.Entity("HotelManagement.Models.FeedbackImage", b =>
+                {
+                    b.Property<int>("FeedbackId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("FeedbackId", "ImageUrl");
+
+                    b.ToTable("FeedbackImages");
                 });
 
             modelBuilder.Entity("HotelManagement.Models.Room", b =>
@@ -279,7 +331,7 @@ namespace HotelManagement.Migrations
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
-                    b.Property<int>("Quantity")
+                    b.Property<int?>("Quantity")
                         .HasColumnType("int");
 
                     b.HasKey("RoomTypeId");
@@ -307,6 +359,30 @@ namespace HotelManagement.Migrations
                     b.ToTable("RoomTypeImages");
                 });
 
+            modelBuilder.Entity("HotelManagement.Models.Service", b =>
+                {
+                    b.Property<int>("ServiceId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ServiceId"));
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
+                    b.HasKey("ServiceId");
+
+                    b.ToTable("Services");
+                });
+
             modelBuilder.Entity("HotelManagement.Models.Booking", b =>
                 {
                     b.HasOne("HotelManagement.Models.Customer", "Customer")
@@ -319,6 +395,15 @@ namespace HotelManagement.Migrations
                         .WithMany("Bookings")
                         .HasForeignKey("EmpId");
 
+                    b.HasOne("HotelManagement.Models.FeedBack", "FeedBack")
+                        .WithMany()
+                        .HasForeignKey("FeedbackId");
+
+                    b.HasOne("HotelManagement.Models.Room", "Room")
+                        .WithMany("Bookings")
+                        .HasForeignKey("RoomNo")
+                        .OnDelete(DeleteBehavior.NoAction);
+
                     b.HasOne("HotelManagement.Models.RoomType", "RoomType")
                         .WithMany("Bookings")
                         .HasForeignKey("RoomTypeId")
@@ -329,7 +414,30 @@ namespace HotelManagement.Migrations
 
                     b.Navigation("Employee");
 
+                    b.Navigation("FeedBack");
+
+                    b.Navigation("Room");
+
                     b.Navigation("RoomType");
+                });
+
+            modelBuilder.Entity("HotelManagement.Models.BookingService", b =>
+                {
+                    b.HasOne("HotelManagement.Models.Booking", "Booking")
+                        .WithMany("BookingServices")
+                        .HasForeignKey("BookingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HotelManagement.Models.Service", "Service")
+                        .WithMany("BookingServices")
+                        .HasForeignKey("ServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Booking");
+
+                    b.Navigation("Service");
                 });
 
             modelBuilder.Entity("HotelManagement.Models.Customer", b =>
@@ -369,23 +477,15 @@ namespace HotelManagement.Migrations
                     b.Navigation("RoomType");
                 });
 
-            modelBuilder.Entity("HotelManagement.Models.OccupiedRoom", b =>
+            modelBuilder.Entity("HotelManagement.Models.FeedbackImage", b =>
                 {
-                    b.HasOne("HotelManagement.Models.Booking", "Booking")
-                        .WithMany("OccupiedRooms")
-                        .HasForeignKey("BookingId")
+                    b.HasOne("HotelManagement.Models.FeedBack", "FeedBack")
+                        .WithMany()
+                        .HasForeignKey("FeedbackId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HotelManagement.Models.Room", "Room")
-                        .WithMany("OccupiedRooms")
-                        .HasForeignKey("RoomNo")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Booking");
-
-                    b.Navigation("Room");
+                    b.Navigation("FeedBack");
                 });
 
             modelBuilder.Entity("HotelManagement.Models.Room", b =>
@@ -412,7 +512,7 @@ namespace HotelManagement.Migrations
 
             modelBuilder.Entity("HotelManagement.Models.Booking", b =>
                 {
-                    b.Navigation("OccupiedRooms");
+                    b.Navigation("BookingServices");
                 });
 
             modelBuilder.Entity("HotelManagement.Models.Customer", b =>
@@ -432,7 +532,7 @@ namespace HotelManagement.Migrations
 
             modelBuilder.Entity("HotelManagement.Models.Room", b =>
                 {
-                    b.Navigation("OccupiedRooms");
+                    b.Navigation("Bookings");
                 });
 
             modelBuilder.Entity("HotelManagement.Models.RoomType", b =>
@@ -444,6 +544,11 @@ namespace HotelManagement.Migrations
                     b.Navigation("RoomTypeImages");
 
                     b.Navigation("Rooms");
+                });
+
+            modelBuilder.Entity("HotelManagement.Models.Service", b =>
+                {
+                    b.Navigation("BookingServices");
                 });
 #pragma warning restore 612, 618
         }

@@ -17,6 +17,11 @@ namespace HotelManagement.Models
         public virtual Employee? Employee { get; set; }
         public int? EmpId { get; set; }
 
+        [ForeignKey("RoomNo")]
+        public virtual Room? Room { get; set; }
+        [StringLength(10)]
+        public string? RoomNo { get; set; }
+
         [ForeignKey("RoomTypeId")]
         public virtual RoomType? RoomType { get; set; }
         [Required]
@@ -39,6 +44,10 @@ namespace HotelManagement.Models
 
         public string Status { get; set; }
 
-        public virtual List<OccupiedRoom>? OccupiedRooms { get; set; }
+        [ForeignKey("FeedbackId")]
+        public virtual FeedBack? FeedBack { get; set; }
+        public int? FeedbackId { get; set; }
+
+        public virtual List<BookingService>? BookingServices { get; set; }
     }
 }

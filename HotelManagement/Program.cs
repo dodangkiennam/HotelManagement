@@ -1,13 +1,17 @@
 using HotelManagement.Data;
+using HotelManagement.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using System;
+using System.Configuration;
 using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DbConnection") ?? throw new InvalidOperationException("Connection string 'DbConnection' not found.")));
@@ -29,13 +33,6 @@ builder.Services.AddAuthorization(options =>
 /*builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);*/
 
 var app = builder.Build();
-
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-
-    SeedData.Initialize(services);
-}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

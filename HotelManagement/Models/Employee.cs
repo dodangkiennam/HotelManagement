@@ -9,7 +9,7 @@ namespace HotelManagement.Models
         public int EmpId { get; set; }
 
         [ForeignKey("AccId")]
-        public virtual Account Account { get; set; }
+        public virtual Account? Account { get; set; }
         public int? AccId { get; set; }
 
         public string Name { get; set; }

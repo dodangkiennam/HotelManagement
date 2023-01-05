@@ -1,0 +1,42 @@
+﻿@model Booking
+
+@{
+	ViewData["title"] = "Manage Booking - Select Room";
+}
+
+<div class="text-center mb-3">
+	<h1 class="display-6">Select Room</h1>
+</div>
+
+<div class="container-fluid">
+	@if (ViewBag.recommendedRooms is not null){
+		<h6>Recommended Rooms</h6>
+		<table class="table table-bordered caption-top">
+			<caption>@ViewBag.recommendedRoomType.Name</caption>
+			<tr>
+				<td>
+					@foreach (var room in ViewBag.recommendedRooms){
+						<a class="btn btn-success" asp-action="SelectedRoom" asp-route-BookingId="@Model.BookingId" asp-route-RoomNo="@room.RoomNo">@room.RoomNo</a>
+					}
+				</td>
+			</tr>
+		</table>
+		<h6>Another Available Rooms</h6>
+		@foreach (var anotherRoomType in ViewBag.anotherRoomTypes)
+		{
+			<table class="table table-bordered caption-top">
+				<caption>@anotherRoomType.Name (Max Adults: @anotherRoomType.MaxAdult - Max Child: @anotherRoomType.MaxChild)</caption>
+				<tr>
+					<td>
+						@foreach (var room in ViewBag.anotherRooms)
+						{
+							if (anotherRoomType.RoomTypeId==room.RoomTypeId){
+								<a class="btn btn-primary" asp-action="SelectedRoom" asp-route-BookingId="@Model.BookingId" asp-route-RoomNo="@room.RoomNo">@room.RoomNo</a>
+							}
+						}
+					</td>
+				</tr>
+			</table>
+		}
+	}
+</div>

@@ -1,0 +1,124 @@
+﻿@model Booking
+
+@{
+	ViewData["title"] = "Booking - Create";
+}
+
+<style>
+	p{
+		line-height: 1.6;
+	}
+</style>
+
+<div class="text-center mb-3">
+	<h1 class="display-6">Create Booking</h1>
+</div>
+
+<div class="container-fluid py-1">
+    <div class="row">
+		<form method="post" asp-action="ConfirmedCreate">
+			<div class="col-md-4 mx-auto">
+				<div class="row">
+					<div class="col-md-4">
+						<p>Customer Name</p>
+					</div>
+					<div class="col-md-8">
+						<input readonly class="form-control" type="text" value="@ViewBag.Customer.Name" />
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						<p>Customer Phone</p>
+					</div>
+					<div class="col-md-8">
+						<input readonly class="form-control" type="text" value="@ViewBag.Customer.Phone" />
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						<p>Check In Date</p>
+					</div>
+					<div class="col-md-8">
+						<input readonly class="form-control" type="date" asp-for="CheckIn" />
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						<p>Check Out Date</p>
+					</div>
+					<div class="col-md-8">
+						<input readonly class="form-control" type="date" asp-for="CheckOut" />
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						<p>Room Type</p>
+					</div>
+					<div class="col-md-8">
+						<input readonly class="form-control" type="text" value="@ViewBag.RoomType.Name" />
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						<p>Max Adult</p>
+					</div>
+					<div class="col-md-8">
+						<input readonly class="form-control" type="text" value="@ViewBag.RoomType.MaxAdult" />
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						<p>Max Child</p>
+					</div>
+					<div class="col-md-8">
+						<input readonly class="form-control" type="text" value="@ViewBag.RoomType.MaxChild" />
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						<p>Created At</p>
+					</div>
+					<div class="col-md-8">
+						<input readonly class="form-control" type="date" asp-for="@Model.CreateDate" />
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						<p>Total</p>
+					</div>
+					<div class="col-md-8">
+						<input readonly class="form-control" asp-for="@Model.TotalPrice" />
+					</div>
+				</div>
+				<div class="row mb-3">
+					<input readonly class="form-control" type="hidden" asp-for="@Model.RoomTypeId" />
+					<input readonly class="form-control" type="hidden" asp-for="@Model.RoomAmount" />
+					<input readonly class="form-control" type="hidden" asp-for="@Model.CusId" />
+					<input readonly class="form-control" type="hidden" asp-for="@Model.Status" />
+				</div>
+				<div class="text-center mb-3">
+					<button class="btn btn-success mx-auto" type="submit">Confirm</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
+@section Scripts{
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+	<script>
+		$(function(){
+
+			const model = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model));
+			if (model != null) {
+				console.log(model);
+				d_startDate = moment(model.CheckIn, 'YYYY-MM-DD');
+				d_endDate = moment(model.CheckOut, 'YYYY-MM-DD');
+
+				$('input[name="CheckIn"]').val(moment(d_startDate).format('YYYY-MM-DD'));
+				$('input[name="CheckOut"]').val(moment(d_endDate).format('YYYY-MM-DD'));
+			}
+		})
+	</script>
+}

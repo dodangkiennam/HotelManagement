@@ -10,12 +10,12 @@ namespace HotelManagement.Models
         public string RoomNo { get; set; }
 
         [ForeignKey("RoomTypeId")]
-        public RoomType? RoomType { get; set; }
+        public virtual RoomType? RoomType { get; set; }
         [Required]
         public int RoomTypeId { get; set; }
 
         public string? Description { get; set; }
 
-        public virtual List<OccupiedRoom>? OccupiedRooms { get; set; }
+        public virtual List<Booking>? Bookings { get; set; }
     }
 }

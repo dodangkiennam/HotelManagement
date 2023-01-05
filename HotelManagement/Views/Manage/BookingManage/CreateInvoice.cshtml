@@ -1,0 +1,114 @@
+﻿@model Booking
+
+@{
+	ViewData["title"] = "Booking - Details";
+	Layout = "";
+}
+
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>@ViewData["Title"] - 5Star Hotel</title>
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/HotelManagement.styles.css" asp-append-version="true" />
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="col-md-8 mx-auto">
+			<div class="text-center mb-3">
+				<h1 class="display-6">Booking InVoice</h1>
+			</div>
+			<div class="container-fluid">
+				<div class="row mb-3">
+					<div class="col-md-4">
+						<table class="table caption-top">
+							<caption>Customer information</caption>
+							<tr>
+								<td class="col-sm-4">Name</td>
+								<td class="col-sm-8">@Model.Customer.Name</td>
+							</tr>
+							<tr>
+								<td class="col-sm-4">Contact Number</td>
+								<td class="col-sm-8">@Model.Customer.Phone</td>
+							</tr>
+							<tr>
+								<td class="col-sm-4">Email</td>
+								<td class="col-sm-8">@Model.Customer.Email</td>
+							</tr>
+						</table>
+					</div>
+					<div class="col-md-8">
+						<table class="table caption-top table-bordered">
+							<caption>Booking Information</caption>
+							<tr>
+								<td class="col-sm-4">Booking Id</td>
+								<td class="col-sm-8">@Model.BookingId</td>
+							</tr>
+							<tr>
+								<td class="col-sm-4">Create Date</td>
+								<td class="col-sm-8">@Model.CreateDate.ToShortDateString()</td>
+							</tr>
+							<tr>
+								<td class="col-sm-4">Check In Date</td>
+								<td class="col-sm-8">@Model.CheckIn.ToShortDateString()</td>
+							</tr>
+							<tr>
+								<td class="col-sm-4">Check Out Date</td>
+								<td class="col-sm-8">@Model.CheckOut.ToShortDateString()</td>
+							</tr>
+							<tr>
+								<td class="col-sm-4">Number of Date</td>
+								<td class="col-sm-8">@((Model.CheckOut - Model.CheckIn).TotalDays)</td>
+							</tr>
+							<tr>
+								<td>Checking Employee</td>
+								<td class="col-sm-8">@(Model.Employee != null ? Model.Employee.Name : "")</td>
+							</tr>
+						</table>
+						<table class="table caption-top table-bordered" id="sortTable">
+							<caption>Orders</caption>
+							<thead>
+								<tr>
+									<th>Name</th>
+									<th>Quantity</th>
+									<th>Price</th>
+									<th>Sum</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>@Model.RoomType.Name</td>
+									<td>1</td>
+									<td>@(Model.RoomType.Price)$</td>
+									<td>@(Model.TotalPrice)$</td>
+								</tr>
+								@foreach (var s in ViewBag.BookingServices)
+								{
+									<tr>
+										<td>@s.Service.Name</td>
+										<td>@s.TotalAmount</td>
+										<td>@(s.Service.Price)$</td>
+										<td>@(s.Sum)</td>
+									</tr>
+								}
+								<tr>
+									<th>
+										Total: @(ViewBag.TotalPrice)$
+									</th>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+</html>
+
+

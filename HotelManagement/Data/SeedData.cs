@@ -135,6 +135,7 @@ namespace HotelManagement.Data
                     }
                 );
 
+                context.SaveChanges();
 
                 RoomTypeImage[] roomTypeImages =
                 {
@@ -157,6 +158,8 @@ namespace HotelManagement.Data
                         CreateDate = DateTime.Now
                     }
                 };
+
+                context.SaveChanges();
 
                 context.RoomTypes.AddRange(
                     new RoomType()
@@ -301,6 +304,86 @@ namespace HotelManagement.Data
                                 Description="WORLD"
                             }
                         })
+                    }
+                );
+
+                context.SaveChanges();
+
+                context.Bookings.AddRange(
+                    new Booking()
+                    {
+                        CusId = 1,
+                        EmpId = 1,
+                        RoomTypeId = 1,
+                        RoomAmount = 1,
+                        CreateDate = DateTime.Now,
+                        CheckIn = DateTime.Now.AddDays(10),
+                        CheckOut = DateTime.Now.AddDays(12),
+                        TotalPrice = 500,
+                        Status = "REQUEST_BOOKING"
+                    },
+                    new Booking()
+                    {
+                        CusId = 3,
+                        EmpId = 2,
+                        RoomTypeId = 2,
+                        RoomAmount = 1,
+                        RoomNo = "A101",
+                        CreateDate = DateTime.Now,
+                        CheckIn = DateTime.Now.AddDays(1),
+                        CheckOut = DateTime.Now.AddDays(5),
+                        TotalPrice = 500,
+                        Status = "BOOKING_SUCCESS"
+                    },
+                    new Booking()
+                    {
+                        CusId = 2,
+                        EmpId = 3,
+                        RoomTypeId = 3,
+                        RoomAmount = 1,
+                        CreateDate = DateTime.Now.AddDays(-12),
+                        CheckIn = DateTime.Now.AddDays(-10),
+                        CheckOut = DateTime.Now.AddDays(-8),
+                        TotalPrice = 500,
+                        Status = "CANCEL"
+                    },
+                    new Booking()
+                    {
+                        CusId = 3,
+                        EmpId = 1,
+                        RoomTypeId = 1,
+                        RoomAmount = 1,
+                        CreateDate = DateTime.Now,
+                        CheckIn = DateTime.Now.AddDays(5),
+                        CheckOut = DateTime.Now.AddDays(7),
+                        TotalPrice = 500,
+                        Status = "REQUEST_BOOKING"
+                    },
+                    new Booking()
+                    {
+                        CusId = 2,
+                        EmpId = 3,
+                        RoomTypeId = 2,
+                        RoomAmount = 1,
+                        RoomNo = "A101",
+                        CreateDate = DateTime.Now.AddDays(-22),
+                        CheckIn = DateTime.Now.AddDays(-20),
+                        CheckOut = DateTime.Now.AddDays(-15),
+                        TotalPrice = 500,
+                        Status = "CANCEL"
+                    },
+                    new Booking()
+                    {
+                        CusId = 2,
+                        EmpId = 1,
+                        RoomTypeId = 2,
+                        RoomAmount = 1,
+                        RoomNo = "A102",
+                        CreateDate = DateTime.Now,
+                        CheckIn = DateTime.Now.AddDays(3),
+                        CheckOut = DateTime.Now.AddDays(4),
+                        TotalPrice = 500,
+                        Status = "BOOKING_SUCCESS"
                     }
                 );
 

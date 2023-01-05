@@ -94,6 +94,8 @@ namespace HotelManagement.Controllers.Manage
                 model.RoomType.FacilityApplies = model.FacilityApplies;
             }
 
+            model.RoomType.Quantity = 0;
+
             await _context.RoomTypes.AddAsync(model.RoomType);
             await _context.SaveChangesAsync();
 

@@ -1,0 +1,191 @@
+﻿@model BookingSearchViewModel
+
+@{
+	ViewData["title"] = "Booking";
+}
+
+<style>
+	.nice-select{
+		width: fit-content;
+		float: inherit;
+		text-align: center !important;
+	}
+
+    .bk-btn{
+        display: inline-block;
+        font-size: 13px;
+        font-weight: 700;
+        padding: 16px 28px 15px;
+        background: #dfa974;
+        color: #ffffff;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+</style>
+
+<div class="text-center mb-3">
+	<h1 class="display-6">Booking</h1>
+</div>
+
+<div class="container-fluid">
+	<div class="col-md-10 mx-auto">
+		<form method="get" asp-action="Search">
+			<div class="col-md-10 mx-auto">
+				<table class="table">
+					<tr class="row">
+						<td class="col-md-3 text-center pb-0">
+							<h6><i class="fa fa-calendar me-1"></i>Check In</h6>
+							<p id="checkin_p" class="fs-5 mt-2 mb-0"></p>
+						</td>
+						<td class="col-md-3 text-center pb-0">
+							<h6><i class="fa fa-calendar me-1"></i>Check Out</h6>
+							<p id="checkout_p" class="fs-5 mt-2 mb-0"></p>
+						</td>
+						<td class="col-md-3 text-center">
+							<h6><i class="fa fa-user me-1"></i>Adults</h6>
+							<select style="width: 100%;" class="form-control mx-auto" name="MaxAdult">
+								@for (int i = 1; i < 11; i++)
+								{
+									@if (i == Model.MaxAdult)
+									{
+										<option value="@i" selected>@i</option>
+									}
+									else
+									{
+										<option value="@i">@i</option>
+									}
+								}
+							</select>
+						</td>
+						<td class="col-md-3 text-center">
+							<h6><i class="fa fa-child me-1"></i>Childs</h6>
+							<select style="width: 100%;" class="form-control mx-auto" name="MaxChild">
+								@for (int i = 0; i < 11; i++)
+								{
+									@if (i == Model.MaxChild)
+									{
+										<option value="@i" selected>@i</option>
+									}
+									else
+									{
+										<option value="@i">@i</option>
+									}
+								}
+							</select>
+						</td>
+					</tr>
+					<input style="visibility: hidden;" type="text" name="daterange" />
+				</table>
+			</div>
+			<input hidden type="date" asp-for="CheckIn" />
+			<input hidden type="date" asp-for="CheckOut" />
+			<div class="mb-3 text-center">
+				<button class="btn btn-info" type="submit">Search</button>
+			</div>
+		</form>
+        <div class="rooms-section spad">
+            <div class="container">
+                <div class="row">
+                    @if (ViewBag.availableRoomTypes is not null)
+                    {
+                        @foreach (var roomType in ViewBag.availableRoomTypes)
+                        {
+                            <div class="col-lg-4 col-md-6">
+                                <div class="room-item">
+                                    <div class="bg-light" style="height: 200px; width: 360px; overflow: hidden; object-position: center;">
+                                        <img style="height: 100%; width: 100%; object-fit: cover; object-position: center;" src=@("~/images/" + roomType.RoomTypeImages[0].ImageUrl) asp-append-version=true>
+                                    </div>
+                                    <div class="ri-text">
+                                        <h4>@roomType.Name</h4>
+                                        <h3>@(roomType.Price)$<span>/Pernight</span></h3>
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="r-o">Max Adult:</td>
+                                                    <td>@roomType.MaxAdult</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="r-o">Max Child:</td>
+                                                    <td>@roomType.MaxChild</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="r-o">Quantity Left</td>
+                                                    <td>@roomType.Quantity</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        @if (!User.Identity.IsAuthenticated)
+                                        {
+                                            <a class="bk-btn" asp-action="Login" asp-controller="Account" asp-route-ReturnUrl="@(Context.Request.Path + Context.Request.QueryString)">Login for Booking</a>
+                                            <br>
+                                            <a class="primary-btn" asp-action="Register" asp-controller="Account" asp-route-ReturnUrl="@(Context.Request.Path + Context.Request.QueryString)">Or register for now</a>
+                                        }
+                                        else
+                                        {
+                                            <form method="post" asp-action="Create">
+                                                <input hidden type="date" asp-for="CheckIn" />
+                                                <input hidden type="date" asp-for="CheckOut" />
+                                                <input hidden name="RoomTypeId" value="@roomType.RoomTypeId">
+                                                <input class="bk-btn" type="submit" value="Book Now">
+                                            </form>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+	</div>
+</div>
+
+@section Scripts{
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+	<script>
+		$(function () {
+
+			$('#checkin_p').click(()=>{
+				$('input[name="daterange"]').click();
+			});
+
+			$('#checkout_p').click(() => {
+				$('input[name="daterange"]').click();
+			});
+
+			const date = new Date();
+			let d_startDate = moment(date, 'YYYY-MM-DD').add(1, 'days');
+			let d_endDate = moment(date, 'YYYY-MM-DD').add(2, 'days');
+			
+			const model = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model));
+			if(model != null){
+				console.log(model);
+				d_startDate = moment(model.CheckIn, 'YYYY-MM-DD');
+				d_endDate = moment(model.CheckOut, 'YYYY-MM-DD');
+			}
+
+			$('#checkin_p').text(new Date(d_startDate).toLocaleDateString());
+			$('#checkout_p').text(new Date(d_endDate).toLocaleDateString());
+			$('input[name="CheckIn"]').val(moment(d_startDate).format('YYYY-MM-DD'));
+			$('input[name="CheckOut"]').val(moment(d_endDate).format('YYYY-MM-DD'));
+
+			$('input[name="daterange"]').daterangepicker({
+				opens: 'right',
+				startDate: d_startDate,
+				endDate: d_endDate,
+				minDate: moment(date, 'YYYY-MM-DD').add(1, 'days'),
+				maxDate: moment(date, 'YYYY-MM-DD').add(100, 'days')
+			}, function (start, end, label) {
+
+				$('input[name="CheckIn"]').val(moment(start).format('YYYY-MM-DD'));
+				$('input[name="CheckOut"]').val(moment(end).format('YYYY-MM-DD'));
+
+				$('#checkin_p').text(new Date(start).toLocaleDateString());
+				$('#checkout_p').text(new Date(end).toLocaleDateString());
+			});
+		});
+	</script>
+}

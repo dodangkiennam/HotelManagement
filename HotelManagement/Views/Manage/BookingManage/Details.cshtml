@@ -1,0 +1,184 @@
+﻿@model Booking
+
+@{
+	ViewData["title"] = "Booking - Details";
+}
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Confirm Cancel</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				Cancel this booking? Make sure contact to the customer first!
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Ignore</button>
+				<a class="btn btn-primary" asp-action="Cancel" asp-route-id="@Model.BookingId">Confirm</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="text-center mb-3">
+	<h1 class="display-6">Booking Details</h1>
+</div>
+
+<div class="container-fluid">
+	<div class="row mb-3">
+		<div class="col-md-4 border-end">
+			<table class="table caption-top">
+				<caption>Customer contact information</caption>
+				<tr>
+					<td class="col-sm-4">Name</td>
+					<td class="col-sm-8">@Model.Customer.Name</td>
+				</tr>
+				<tr>
+					<td class="col-sm-4">Gender</td>
+					<td class="col-sm-8">@Model.Customer.Gender</td>
+				</tr>
+				<tr>
+					<td class="col-sm-4">Contact Number</td>
+					<td class="col-sm-8">@Model.Customer.Phone</td>
+				</tr>
+				<tr>
+					<td class="col-sm-4">Email</td>
+					<td class="col-sm-8">@Model.Customer.Email</td>
+				</tr>
+			</table>
+		</div>
+		<div class="col-md-8">
+			<table class="table caption-top table-bordered">
+				<caption>Booking Information</caption>
+				<tr>
+					<td class="col-sm-4">Booking Id</td>
+					<td class="col-sm-8">@Model.BookingId</td>
+				</tr>
+				<tr>
+					<td class="col-sm-4">Create Date</td>
+					<td class="col-sm-8">@Model.CreateDate.ToShortDateString()</td>
+				</tr>
+				<tr>
+					<td class="col-sm-4">Check In Date</td>
+					<td class="col-sm-8">@Model.CheckIn.ToShortDateString()</td>
+				</tr>
+				<tr>
+					<td class="col-sm-4">Check Out Date</td>
+					<td class="col-sm-8">@Model.CheckOut.ToShortDateString()</td>
+				</tr>
+				<tr>
+					<td class="col-sm-4">Total for Room</td>
+					<td class="col-sm-8">@(Model.TotalPrice)$</td>
+				</tr>
+				<tr>
+					<td class="col-sm-4">Status</td>
+					<td class="col-sm-8">@Model.Status</td>
+				</tr>
+				<tr>
+					<td>Checking Employee</td>
+					<td class="col-sm-8">@(Model.Employee != null ? Model.Employee.Name : "")</td>
+				</tr>
+			</table>
+			<table class="table caption-top table-bordered">
+				<caption>Room Type Information</caption>
+				<tr>
+					<td class="col-sm-4">Room No</td>
+					<td class="col-sm-8">@(Model.RoomNo != null ? Model.RoomNo : "")</td>
+				</tr>
+				<tr>
+					<td class="col-sm-4">Room Type</td>
+					<td class="col-sm-8">@Model.RoomType.Name</td>
+				</tr>
+				<tr>
+					<td class="col-sm-4">Max Adult</td>
+					<td class="col-sm-8">@Model.RoomType.MaxAdult</td>
+				</tr>
+				<tr>
+					<td class="col-sm-4">Max Child</td>
+					<td class="col-sm-8">@Model.RoomType.MaxChild</td>
+				</tr>
+				<tr>
+					<td class="col-sm-4">Price</td>
+					<td class="col-sm-8">@Model.RoomType.Price</td>
+				</tr>
+			</table>
+			<h4 class="fw-normal">Order Services</h4>
+			<table class="table caption-top table-bordered" id="sortTable">
+				<thead>
+					<tr>
+						<th>Order Time</th>
+						<th>Service Name</th>
+						<th>Amount</th>
+						@if (Model.Status == "CHECKED_IN")
+						{
+							<th></th>
+						}
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var s in ViewBag.ListOfBookingServices)
+					{
+						<tr>
+							<td>@s.OrderTime</td>
+							<td>@s.Service.Name</td>
+							<td>@s.Amount</td>
+							@if (Model.Status == "CHECKED_IN")
+							{
+								<td>
+									<a class="btn btn-danger" asp-action="DeleteService" asp-route-OrderTime="@s.OrderTime" asp-route-BookingId="@s.BookingId" asp-route-ServiceId="@s.ServiceId">Delete</a>
+								</td>
+							}
+						</tr>
+					}
+				</tbody>
+			</table>
+			<div>
+				<a class="btn btn-primary" asp-action="Index">Back To List</a>
+				@if (DateTime.Compare(DateTime.Now, Model.CheckIn) < 0 && (Model.Status == "PENDING" || Model.Status == "BOOKING_SUCCESS"))
+				{
+					<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+						Cancel Booking
+					</button>
+				}
+				@if (Model.RoomNo == null && Model.Status == "REQUEST_BOOKING")
+				{
+					<a class="btn btn-success" asp-action="Confirm" asp-route-id="@Model.BookingId">Confirm Booking</a>
+				}
+				@if (Model.RoomNo == null && Model.Status == "BOOKING_SUCCESS")
+				{
+					<a class="btn btn-success" asp-action="CheckIn" asp-route-id="@Model.BookingId">Check In</a>
+				}
+				@if (Model.Status == "CHECKED_IN")
+				{
+					<a class="btn btn-success" asp-action="AddService" asp-route-id="@Model.BookingId">Add Service</a>
+				}
+				@if (Model.Status == "CHECKED_IN")
+				{
+					<a class="btn btn-success" asp-action="CheckOut" asp-route-id="@Model.BookingId">Check Out</a>
+				}
+				@if (Model.Status == "CHECKED_OUT")
+				{
+					<a class="btn btn-info" asp-action="PrintInvoice" asp-route-id="@Model.BookingId">Print Invoice</a>
+				}
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css">
+<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+<script>
+	$('#sortTable').DataTable({
+		columnDefs: [{
+			orderable: false,
+			targets: [3]
+		}]
+	});
+</script>
+
+
+

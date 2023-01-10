@@ -27,7 +27,7 @@
                     {
                         <div class="carousel-item @(i == 0 ? "active" : "")">
                             <div class="border rounded-3" style="width: 500px; height: 400px; overflow: hidden; object-position: center;">
-                                <img style="max-height: 100%; max-width: 100%; object-fit: cover;" src=@("~/images/" + Model.roomTypeImages[i].ImageUrl) class="d-block w-100" alt="" asp-append-version=true>
+                                <img style="height: 100%; width: 100%; object-fit: cover;" src=@("~/images/" + Model.roomTypeImages[i].ImageUrl) class="d-block w-100" alt="" asp-append-version=true>
                             </div>
                             <div class="carousel-caption d-block">
                                 <h5>@Model.roomTypeImages[i].ImageName</h5>

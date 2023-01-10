@@ -7,19 +7,19 @@
 </div>
 
 <div class="row">
-    <div class="col-md-6">
+	<div class="mb-3">
+		<a asp-action="Details" asp-route-id="@ViewBag.BookingId" class="btn btn-info me-3">Back</a>
+	</div>
+    <div class="col-md-6 mx-auto border-start border-end">
 		<form method="post" asp-action="AddService">
 			<input id="ser_count" type="hidden" value="1" name="serCount" />
 			<input type="hidden" value="@ViewBag.BookingId" name="BookingId" />
 			<div id="service-container">
 						<!-- Services goes here-->
 			</div>
-			<div class="text-end">
-				<button class="btn btn-primary mb-3" type="button" id="add-ser-btn" onclick="onClick()">More</button>
-			</div>
-			<div class="d-flex">
-				<a asp-action="Details" asp-route-id="@ViewBag.BookingId" class="btn btn-danger me-3">Cancel</a>
-				<button type="submit" class="btn btn-success">Add</button>
+			<div class="text-center">
+				<button class="btn btn-success me-3" type="button" id="add-ser-btn" onclick="onClick()">More</button>
+				<button type="submit" class="btn btn-primary">Finish Add</button>
 			</div>
 		</form>
     </div>

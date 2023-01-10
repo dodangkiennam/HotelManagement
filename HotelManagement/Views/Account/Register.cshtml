@@ -22,32 +22,23 @@
                     @ViewBag.Message    
                 </span>    
             }  
-			<div class="mb-3">
+			<div class="mb-1">
 				<label asp-for=Name class="form-label">Full Name</label>
 				<input asp-for=Name class="form-control" />
 				<span asp-validation-for=Name class="text-danger"></span>
 			</div>
-            <div class="mb-3">
-				<label asp-for=Gender class="form-label">Gender</label>
+            <div class="mb-1 d-flex row">
+				<div class="col-md-6">
+                    <label asp-for=Gender class="form-label">Gender</label>
                 <select class="form-control mb-3" asp-for=Gender>
                     <option value="" selected>Choose your gender</option>
                     <option value="female">Female</option>
                     <option value="male">Male</option>
                 </select>
 				<span asp-validation-for=Gender class="text-danger"></span>
-			</div>
-			<div class="mb-3">
-				<label asp-for=CitizencardId class="form-label">Citizend Card ID</label>
-				<input asp-for=CitizencardId class="form-control" />
-				<span asp-validation-for=CitizencardId class="text-danger"></span>
-			</div>
-			<div class="mb-3">
-				<label asp-for=Phone class="form-label">Phone Number</label>
-				<input asp-for=Phone class="form-control" />
-				<span asp-validation-for=Phone class="text-danger"></span>
-			</div>
-			<div>
-                <label asp-for=CountryCode class="form-label"></label>
+                </div>
+                <div class="col-md-6">
+					<label asp-for=CountryCode class="form-label"></label>
 				<select asp-for=CountryCode class="form-control mb-3">
                     <option value="AF">Afghanistan</option>
                     <option value="AX">Aland Islands</option>
@@ -302,24 +293,38 @@
                     <option value="ZM">Zambia</option>
                     <option value="ZW">Zimbabwe</option>
                 </select>
+                </div>
 			</div>
-			<div class="mb-3">
+			<div class="mb-1">
+				<label asp-for=CitizencardId class="form-label">Citizend Card ID</label>
+				<input asp-for=CitizencardId class="form-control" />
+				<span asp-validation-for=CitizencardId class="text-danger"></span>
+			</div>
+			<div class="mb-1">
+				<label asp-for=Phone class="form-label">Phone Number</label>
+				<input asp-for=Phone class="form-control" />
+				<span asp-validation-for=Phone class="text-danger"></span>
+			</div>
+			<div>
+                
+			</div>
+			<div class="mb-1">
 				<label asp-for=Email class="form-label">Email</label>
 				<input asp-for=Email class="form-control" />
 				<span asp-validation-for=Email class="text-danger"></span>
 			</div>
-			<div class="mb-3">
+			<div class="mb-1">
 				<label asp-for=Account.Username class="form-label">Username</label>
 				<input asp-for=Account.Username class="form-control" />
 				<span asp-validation-for=Account.Username class="text-danger"></span>
 			</div>
-			<div class="mb-3">
+			<div class="mb-1">
 				<label asp-for=Account.Password class="form-label">Password</label>
 				<input asp-for=Account.Password class="form-control" />
 				<span asp-validation-for=Account.Password class="text-danger"></span>
 			</div>
 			@Html.HiddenFor(x => x.Account.RoleName)
-			<div class="mb-3">
+			<div class="mb-1">
 				<input type="submit" value="Confirm" class="btn btn-primary" />
 			</div>
 		</form>

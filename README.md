@@ -1,5 +1,5 @@
 # HotelManagement
-This is application for managing a hotel, built with ASP.NET Core MVC (.NET 6).
+This is an application for managing a hotel, built with ASP.NET Core MVC (.NET 6).
 ## Installation Prerequisites
 - SQL server
 - .NET (version 6 or higher)
